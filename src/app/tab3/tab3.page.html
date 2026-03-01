@@ -1,17 +1,103 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start" *ngIf="viewMode !== 'lista'">
+      <ion-button (click)="voltar()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
     <ion-title>
-      Tab 3
+      {{ viewMode === 'lista' ? 'Pacientes' : (viewMode === 'cadastro' ? 'Novo Cadastro' : 'Medições') }}
     </ion-title>
+  </ion-toolbar>
+
+  <ion-toolbar color="primary" *ngIf="viewMode === 'lista'">
+    <ion-searchbar placeholder="Buscar paciente..." (ionInput)="buscar($event)"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  
+  <div *ngIf="viewMode === 'lista'">
+    <ion-list lines="none" class="ion-padding">
+      <ion-item-sliding *ngFor="let p of pacientesFiltrados">
+        
+        <ion-item (click)="verDetalhes(p)" button detail="false" class="paciente-card">
+          <ion-label>
+            <h2><strong>{{ p.nome }}</strong></h2>
+            <p>CPF: {{ p.cpf }}</p>
+            <p>Nascimento: {{ p.dataNasc }}</p>
+          </ion-label>
+          <ion-badge slot="end" color="tertiary">Ver Dados</ion-badge>
+        </ion-item>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="deletarPaciente(p)">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+        
+      </ion-item-sliding>
+    </ion-list>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="abrirCadastro()">
+        <ion-icon name="person-add-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+
+  <div *ngIf="viewMode === 'cadastro'" class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Informações Pessoais</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item fill="outline" mode="md" class="ion-margin-bottom">
+          <ion-label position="stacked">Nome Completo</ion-label>
+          <ion-input [(ngModel)]="novoPaciente.nome" placeholder="Nome do paciente"></ion-input>
+        </ion-item>
+        
+        <ion-item fill="outline" mode="md" class="ion-margin-bottom">
+          <ion-label position="stacked">CPF</ion-label>
+          <ion-input [(ngModel)]="novoPaciente.cpf" placeholder="000.000.000-00"></ion-input>
+        </ion-item>
+
+        <ion-item fill="outline" mode="md" class="ion-margin-bottom">
+          <ion-label position="stacked">Data de Nascimento</ion-label>
+          <ion-input [(ngModel)]="novoPaciente.dataNasc" placeholder="DD/MM/AAAA"></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" (click)="salvarNovoPaciente()" class="ion-margin-top">
+          Cadastrar Paciente
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="viewMode === 'detalhes'">
+    <ion-card>
+      <ion-card-header class="ion-text-center">
+        <ion-card-title>{{ pacienteSelecionado?.nome }}</ion-card-title>
+        <ion-text color="medium">CPF: {{ pacienteSelecionado?.cpf }}</ion-text>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item fill="outline" mode="md" class="ion-margin-bottom">
+          <ion-label position="stacked">Nível oxigênio</ion-label>
+          <ion-input [value]="pacienteSelecionado?.oxigenio" placeholder="Aguardando sensor..."></ion-input>
+        </ion-item>
+
+        <ion-item fill="outline" mode="md" class="ion-margin-bottom">
+          <ion-label position="stacked">Batimentos cardíacos</ion-label>
+          <ion-input [value]="pacienteSelecionado?.batimentos" placeholder="Aguardando sensor..."></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" color="success">
+          Iniciar Nova Medição
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
 </ion-content>

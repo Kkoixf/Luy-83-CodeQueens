@@ -1,17 +1,72 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="container-central">
+    
+    <div *ngIf="estaNoLogin">
+      <ion-card class="auth-card">
+        <ion-card-header class="ion-text-center">
+          <ion-card-title>Bem-vindo</ion-card-title>
+          <p>Entre com seus dados</p>
+        </ion-card-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+        <ion-card-content>
+          <ion-item fill="outline" mode="md" class="ion-margin-bottom">
+            <ion-label position="floating">E-mail</ion-label>
+            <ion-input type="email" [(ngModel)]="loginData.email"></ion-input>
+          </ion-item>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+          <ion-item fill="outline" mode="md">
+            <ion-label position="floating">Senha</ion-label>
+            <ion-input type="password" [(ngModel)]="loginData.senha"></ion-input>
+          </ion-item>
+
+          <ion-button expand="block" (click)="fazerLogin()" class="ion-margin-top">
+            Entrar
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+
+      <div class="ion-text-center ion-margin-top">
+        <ion-text (click)="alternarTela()">
+          Não tem conta? <b style="color: var(--ion-color-primary)">Crie uma agora</b>
+        </ion-text>
+      </div>
+    </div>
+
+    <div *ngIf="!estaNoLogin">
+      <ion-card class="auth-card">
+        <ion-card-header class="ion-text-center">
+          <ion-card-title>Nova Conta</ion-card-title>
+          <p>Preencha os campos abaixo</p>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-item fill="outline" mode="md" class="ion-margin-bottom">
+            <ion-label position="floating">Nome</ion-label>
+            <ion-input type="text" [(ngModel)]="cadastroData.nome"></ion-input>
+          </ion-item>
+
+          <ion-item fill="outline" mode="md" class="ion-margin-bottom">
+            <ion-label position="floating">E-mail</ion-label>
+            <ion-input type="email" [(ngModel)]="cadastroData.email"></ion-input>
+          </ion-item>
+
+          <ion-item fill="outline" mode="md">
+            <ion-label position="floating">Senha</ion-label>
+            <ion-input type="password" [(ngModel)]="cadastroData.senha"></ion-input>
+          </ion-item>
+
+          <ion-button expand="block" color="success" (click)="criarConta()" class="ion-margin-top">
+            Finalizar Cadastro
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+
+      <div class="ion-text-center ion-margin-top">
+        <ion-text (click)="alternarTela()">
+          Já tem conta? <b style="color: var(--ion-color-success)">Fazer Login</b>
+        </ion-text>
+      </div>
+    </div>
+
+  </div>
 </ion-content>

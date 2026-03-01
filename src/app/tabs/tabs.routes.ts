@@ -22,8 +22,13 @@ export const routes: Routes = [
           import('../tab3/tab3.page').then((m) => m.Tab3Page),
       },
       {
+        path: 'minha-nova-tab',
+        loadComponent: () => 
+          import('../pages/minha-nova-tab/minha-nova-tab.page').then(m => m.MinhaNovaTabPage)
+      },
+      {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: 'tab1', 
         pathMatch: 'full',
       },
     ],
