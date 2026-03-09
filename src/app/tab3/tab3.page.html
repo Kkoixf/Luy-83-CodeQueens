@@ -18,34 +18,30 @@
 
 <ion-content [fullscreen]="true">
   
-  <div *ngIf="viewMode === 'lista'">
-    <ion-list lines="none" class="ion-padding">
-      <ion-item-sliding *ngFor="let p of pacientesFiltrados">
-        
-        <ion-item (click)="verDetalhes(p)" button detail="false" class="paciente-card">
-          <ion-label>
-            <h2><strong>{{ p.nome }}</strong></h2>
-            <p>CPF: {{ p.cpf }}</p>
-            <p>Nascimento: {{ p.dataNasc }}</p>
-          </ion-label>
-          <ion-badge slot="end" color="tertiary">Ver Dados</ion-badge>
-        </ion-item>
+<div *ngIf="viewMode === 'lista'">
+  <ion-list lines="full" class="ion-padding-bottom">
+    
+    <ion-item *ngFor="let p of pacientesFiltrados" class="paciente-card">
+      
+      <ion-label (click)="verDetalhes(p)">
+        <h2><strong>{{ p.nome }}</strong></h2>
+        <p>CPF: {{ p.cpf }}</p>
+        <p>Nascimento: {{ p.dataNasc }}</p>
+      </ion-label>
 
-        <ion-item-options side="end">
-          <ion-item-option color="danger" (click)="deletarPaciente(p)">
-            <ion-icon slot="icon-only" name="trash"></ion-icon>
-          </ion-item-option>
-        </ion-item-options>
-        
-      </ion-item-sliding>
-    </ion-list>
-
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button (click)="abrirCadastro()">
-        <ion-icon name="person-add-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-  </div>
+      <ion-button fill="clear" color="danger" slot="end" (click)="deletarPaciente(p)">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+      
+    </ion-item>
+    
+  </ion-list>
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="abrirCadastro()" color="danger">                
+    <ion-icon name="person-add-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+</div>
 
   <div *ngIf="viewMode === 'cadastro'" class="ion-padding">
     <ion-card>

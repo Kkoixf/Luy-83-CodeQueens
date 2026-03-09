@@ -10,7 +10,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { addIcons } from 'ionicons'; // Importante para os ícones funcionarem
-import { personAddOutline, trash, eyeOutline, arrowBackOutline } from 'ionicons/icons';
+import { personAddOutline, trash, eyeOutline, arrowBackOutline, trashOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-tab3',
@@ -44,7 +44,7 @@ export class Tab3Page {
 
   constructor() {
     // Registra os ícones que vamos usar na interface
-    addIcons({ personAddOutline, trash, eyeOutline, arrowBackOutline });
+    addIcons({arrowBackOutline,trashOutline,personAddOutline,trash,eyeOutline});
   }
 
   // --- FUNÇÕES DE LÓGICA ---
