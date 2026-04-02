@@ -33,27 +33,9 @@
         </ion-button>
       </form>
 
-      <ion-button expand="block" fill="outline" (click)="toggleMode()">
-        {{ isLoginMode ? 'Cadastrar-se' : 'Voltar ao Login' }}
+      <ion-button expand="block" fill="outline" (click)="irParaCadastro()">
+        Cadastre-se
       </ion-button>
-
-      <div *ngIf="!isLoginMode">
-        <form (ngSubmit)="register()">
-          <ion-item>
-            <ion-label position="floating">Novo Usuário</ion-label>
-            <ion-input [(ngModel)]="newUsername" name="newUsername" required></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label position="floating">Nova Senha</ion-label>
-            <ion-input [(ngModel)]="newPassword" name="newPassword" type="password" required></ion-input>
-          </ion-item>
-
-          <ion-button expand="block" type="submit" [disabled]="!newUsername || !newPassword">
-            Cadastrar
-          </ion-button>
-        </form>
-      </div>
     </ion-card-content>
   </ion-card>
 </ion-content>

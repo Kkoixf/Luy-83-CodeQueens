@@ -33,6 +33,11 @@ export class LoginPage implements OnInit {
     }
   }
 
+  irParaCadastro() {
+  // O caminho '/cadastro' deve ser o mesmo definido no seu app-routing.module.ts
+  this.router.navigate(['/cadastro']);
+}
+
   async login() {
     console.log('Tentando login com:', this.username, this.password);
     try {
