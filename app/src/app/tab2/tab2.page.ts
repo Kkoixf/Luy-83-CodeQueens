@@ -85,25 +85,24 @@ async configurarNovaMao() {
       this.isConfiguring = true;
       this.statusConfig = "Iniciando Bluetooth...";
       
-      // Garante que o Bluetooth está inicializado
       await BleClient.initialize();
       await this.pedirPermissoesBLE();
 
       this.statusConfig = "Buscando MaoRobotica...";
 
-      // Mudança: Request simplificado para evitar erro de filtragem
+      
       const device = await BleClient.requestDevice({
-        // Removemos o filtro de UUID aqui para testar a conexão bruta
+       
         optionalServices: ["6E400001-B5A3-F393-E0A9-E50E24DCCA9E"]
       });
 
       deviceId = device.deviceId;
       this.statusConfig = "Conectando...";
 
-      // Tenta conectar com um tempo limite maior
+      
       await BleClient.connect(deviceId);
       
-      // ✅ PAUSA OBRIGATÓRIA: O ESP32 precisa de tempo após o aperto de mão
+    
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       this.statusConfig = "Enviando dados...";
@@ -111,7 +110,7 @@ async configurarNovaMao() {
       const payload = `SSID:${this.wifiSSID};PASS:${this.wifiPASS}`;
       const data = new TextEncoder().encode(payload);
 
-      // Envio direto
+      
       await BleClient.write(
         deviceId,
         "6E400001-B5A3-F393-E0A9-E50E24DCCA9E", // Service
@@ -132,17 +131,15 @@ async configurarNovaMao() {
     }
   }
 async enviarComando(tipoGesto: string) {
-    // 1. Limpa o IP de qualquer erro de digitação
+    
     let host = this.ipEsp32.trim().replace('http://', '').replace('/', '');
     
-    // 2. Monta a URL
+    
     const url = `http://${host}/executar?tipo=${tipoGesto}`;
 
     console.log("Enviando comando para:", url);
 
     try {
-      // Usamos o fetch com 'no-cors' e ignoramos o erro de resposta opaca.
-      // O modo 'no-cors' faz o navegador enviar a requisição mesmo que não consiga ler a resposta.
       await fetch(url, { 
         method: 'GET', 
         mode: 'no-cors', 
@@ -150,12 +147,12 @@ async enviarComando(tipoGesto: string) {
         cache: 'no-cache'
       });
 
-      // Se chegou aqui, o sinal saiu do celular.
+      
       console.log("Sinal enviado!");
       
     } catch (error) {
       console.error("Erro capturado:", error);
-      // Se o erro persistir aqui, o Android está bloqueando a SAÍDA do pacote.
+      
       alert("Erro ao tocar na mão. Verifique se você está no Wi-Fi 'Yurinha2g'.");
     }
   }
